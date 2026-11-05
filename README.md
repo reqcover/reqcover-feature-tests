@@ -51,3 +51,10 @@ Each scenario states the behaviour ReqCover *should* have; failed checks are lis
 | `-PnoReporters=true` | drop the HTML and XML reporters |
 | `-PexcludeTags=deletion` | skip the `@Nested` deletion tests |
 | `-PbreakListBooks` `-PabortGetBook` `-PdisableBlankTitle` `-PbreakAllInvalidIsbn` `-PbreakRepeated` `-PbreakDynamic` `=true` | make one test fail / abort / disable |
+
+## CI
+
+`.github/workflows/ci.yml` runs the same `make` targets on push and pull requests to `trunk`, weekly, and on demand
+(*Run workflow* lets you pick any `reqcover/reqcover` branch, tag or commit; default `trunk`). It publishes ReqCover,
+runs the baseline (`make test`, must pass), runs every scenario, writes the summary to the job page and uploads the
+dashboard as the `reqcover-dashboard` artifact. Scenario check failures are reported as findings, not as CI failures.

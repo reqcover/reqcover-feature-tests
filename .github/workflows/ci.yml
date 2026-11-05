@@ -1,0 +1,56 @@
+name: ReqCover feature tests
+
+on:
+  push:
+    branches: [ trunk ]
+  pull_request:
+    branches: [ trunk ]
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+    inputs:
+      reqcover-ref:
+        description: 'reqcover/reqcover branch, tag or commit to test'
+        required: false
+        default: 'trunk'
+
+permissions:
+  contents: read
+
+jobs:
+  feature-tests:
+    runs-on: ubuntu-latest
+    env:
+      REQCOVER_REF: ${{ inputs.reqcover-ref || 'trunk' }}
+
+    steps:
+    - uses: actions/checkout@v7.0.1
+
+    - uses: actions/setup-java@v6.1.0
+      with:
+        cache: gradle
+        distribution: 'zulu'
+        java-version: '21'
+
+    - name: Publish ReqCover to Maven local
+      run: make publish-reqcover REQCOVER_REF="$REQCOVER_REF"
+
+    - name: Baseline test run
+      run: make test
+
+    - name: Run feature scenarios
+      run: make scenarios
+
+    - name: Build dashboard
+      run: |
+        make dashboard
+        cat results/summary.md >> "$GITHUB_STEP_SUMMARY"
+
+    - name: Upload dashboard
+      if: always()
+      uses: actions/upload-artifact@v7.0.2
+      with:
+        name: reqcover-dashboard
+        path: |
+          dashboard/
+          results/
