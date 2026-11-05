@@ -1,0 +1,27 @@
+openapi: 3.0.0
+info:
+  title: Library API (read)
+  version: 1.0.0
+paths:
+  /books:
+    get:
+      operationId: listBooks
+      responses:
+        "200":
+          description: All books, sorted by title.
+  /books/{isbn}:
+    get:
+      operationId: getBook
+      responses:
+        "200":
+          description: The book.
+        "404":
+          description: No book with that ISBN.
+  /ping:
+    get:
+      operationId: ping
+  /legacy:
+    get:
+      responses:
+        "200":
+          description: Operation without operationId; ReqCover skips it with a warning.

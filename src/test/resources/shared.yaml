@@ -1,0 +1,11 @@
+openapi: 3.0.0
+info:
+  title: Shared spec (test resources)
+  version: 1.0.0
+paths:
+  /metrics:
+    get:
+      operationId: metrics
+      responses:
+        "200":
+          description: Service metrics.

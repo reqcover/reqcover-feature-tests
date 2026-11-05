@@ -1,0 +1,33 @@
+openapi: 3.0.0
+info:
+  title: Library API (write)
+  version: 1.0.0
+paths:
+  /books:
+    post:
+      operationId: addBook
+      responses:
+        "201":
+          description: Book added.
+          x-requirements:
+            validIsbn:
+              description: A book with a valid ISBN-13 is added.
+            trimsTitle:
+              description: Leading and trailing whitespace is removed from the title.
+        "400":
+          description: Invalid book.
+          x-requirements:
+            blankTitle:
+              description: A blank title is rejected.
+            invalidIsbn:
+              description: An ISBN that is not 13 digits is rejected.
+        "409":
+          description: A book with the same ISBN already exists.
+  /books/{isbn}:
+    delete:
+      operationId: deleteBook
+      responses:
+        "204":
+          description: Book deleted.
+        "404":
+          description: No book with that ISBN.

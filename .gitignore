@@ -1,0 +1,11 @@
+.gradle/
+build/
+results/
+dashboard/
+.reqcover/
+.reqcover-build/
+.reqcover-version
+.idea/
+.kotlin/
+__pycache__/
+.reqcover-commit
